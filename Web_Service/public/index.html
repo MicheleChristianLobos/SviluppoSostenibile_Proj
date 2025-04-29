@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electricity Map</title>
+  <script src="https://cdn.jsdelivr.net/npm/leaflet"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css" />
+  <style>
+    #electricityMap {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="electricityMap"></div>
+  <script>
+    const map = L.map('electricityMap').setView([51.505, -0.09], 5); // Cambia latitudine e longitudine secondo necessità
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+    }).addTo(map);
+
+    fetch('/api/hourly-data')
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(entry => {
+          const { latitude, longitude, carbonIntensity } = entry;
+          const color = carbonIntensity > 500 ? 'red' : carbonIntensity > 300 ? 'orange' : 'green';
+          L.circle([latitude, longitude], {
+            color,
+            radius: 5000,
+          }).addTo(map).bindPopup(`Carbon Intensity: ${carbonIntensity} gCO₂/kWh`);
+        });
+      })
+      .catch(error => console.error('Errore:', error));
+  </script>
+</body>
+</html>
