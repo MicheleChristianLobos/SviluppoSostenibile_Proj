@@ -9,6 +9,7 @@ const mymodule = require('./moduli/frase_del_giorno');
 const cors = require('cors');// Cors (Cross origin resource sharing, protocollo che permette il passaggio di dati tra applicazioni e domini diversi)
 const bodyParser = require('body-parser');//Per leggere i parametri POST occorre preventivamente installare il modulo body-parser
 
+//ciao
 //Sezione impostazione dell’app (app.set)
 app.set('port', process.env.PORT || 3000); //imposta la porta in cui è in ascolto il server
 app.set('appName', 'Web Service'); //imposta il nome dell'applicazione web
