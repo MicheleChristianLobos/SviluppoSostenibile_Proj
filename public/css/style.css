@@ -1,0 +1,92 @@
+/* Reset di base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+  
+  .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
+  
+  /* Header */
+  header {
+    background-color: #2e7d32;
+    color: white;
+    padding: 20px 0;
+  }
+  
+  header h1 {
+    margin-bottom: 10px;
+  }
+  
+  header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  header nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  header nav a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Sezioni */
+  section {
+    padding: 40px 0;
+  }
+  
+  #hero {
+    background: url('https://source.unsplash.com/1600x500/?nature,sustainability') no-repeat center center/cover;
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+  }
+  
+  #hero h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    color: black;
+  }
+
+  #hero p {
+    color: black;
+  }
+  
+  #obiettivi ul {
+    list-style: disc;
+    padding-left: 20px;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #2e7d32;
+    color: white;
+    text-align: center;
+    padding: 30px 0;
+  }
+  
+  footer a {
+    color: #c8e6c9;
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
