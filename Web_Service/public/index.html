@@ -5,16 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Air Quality Map</title>
   <script src="https://cdn.jsdelivr.net/npm/leaflet"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css" />
   <style>
     #map {
-      height: 100vh;
+      height: 100%;
       width: 100%;
     }
   </style>
 </head>
 <body>
-  <div id="map"></div>
+  <div style="display: flex; height: 100vh;">
+    <!-- Mappa -->
+    <div id="map" style="flex: 2;"></div>
+
+    <!-- Colonna per il grafico -->
+    <div style="flex: 1; padding: 10px; background-color: #f9f9f9; border-left: 1px solid #ddd;">
+      <h3>Qualità dell'Aria</h3>
+      <canvas id="airQualityChart" width="400" height="400"></canvas>
+    </div>
+  </div>
   <script>
     const map = L.map('map').setView([37.7749, -122.4194], 5); // Vista iniziale su San Francisco
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -22,6 +32,7 @@
     }).addTo(map);
 
     let currentMarker = null; // Variabile per memorizzare il marker corrente
+    let airQualityChart = null; // Variabile per il grafico
 
     // Funzione per ottenere la qualità dell'aria
     function getAirQuality(lat, lon) {
@@ -54,9 +65,66 @@
                 NH3: ${components.nh3} µg/m³
               `)
               .openPopup();
+
+            // Aggiorna il grafico con i dati ricevuti
+            updateAirQualityChart(components);
           }
         })
         .catch(error => console.error('Errore nella richiesta:', error));
+    }
+
+    // Funzione per aggiornare il grafico
+    function updateAirQualityChart(components) {
+      const data = {
+        labels: ['CO', 'NO', 'NO2', 'O3', 'SO2', 'PM2.5', 'PM10', 'NH3'],
+        datasets: [{
+          label: 'Qualità dell\'Aria',
+          data: [
+            components.co,
+            components.no,
+            components.no2,
+            components.o3,
+            components.so2,
+            components.pm2_5,
+            components.pm10,
+            components.nh3
+          ],
+          backgroundColor: [
+            '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
+            '#9966FF', '#FF9F40', '#FFCD56', '#C9CBCF'
+          ],
+          hoverOffset: 4
+        }]
+      };
+
+      const config = {
+        type: 'pie',
+        data: data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  return `${tooltipItem.label}: ${tooltipItem.raw} µg/m³`;
+                }
+              }
+            }
+          }
+        }
+      };
+
+      // Distruggi il grafico precedente, se esiste
+      if (airQualityChart) {
+        airQualityChart.destroy();
+      }
+
+      // Crea un nuovo grafico
+      const ctx = document.getElementById('airQualityChart').getContext('2d');
+      airQualityChart = new Chart(ctx, config);
     }
 
     // Ottenere la posizione attuale dell'utente
