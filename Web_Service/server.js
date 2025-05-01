@@ -10,8 +10,8 @@ const PORT = 3000;
 app.use(cors());
 
 // Configura il motore di template Pug
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'public', 'views', 'pug')); // Imposta la directory dei file Pug
+//app.set('view engine', 'html');
+
 
 // Servire i file statici dalla cartella "public"
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,7 +34,7 @@ app.get('/api/air-quality', async (req, res) => {
 
 // Route per servire il file index.pug
 app.get('/', (req, res) => {
-  res.render('index'); // Renderizza il file index.pug
+  res.sendFile(path.join(__dirname, 'public', 'views', 'html', 'map.html'));
 });
 
 app.listen(PORT, () => {
