@@ -2,12 +2,16 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const path = require('path'); // Importa il modulo path
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
+
+// Configura il motore di template Pug
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'public', 'views', 'pug')); // Imposta la directory dei file Pug
 
 // Servire i file statici dalla cartella "public"
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,9 +32,9 @@ app.get('/api/air-quality', async (req, res) => {
   }
 });
 
-// Route per servire il file index.html
+// Route per servire il file index.pug
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.render('index'); // Renderizza il file index.pug
 });
 
 app.listen(PORT, () => {

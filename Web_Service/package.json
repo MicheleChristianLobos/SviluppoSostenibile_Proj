@@ -17,7 +17,8 @@
     "helmet": "^4.4.1",
     "morgan": "^1.10.0",
     "node-fetch": "^3.3.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pug": "^3.0.3"
   },
   "keywords": [],
   "description": ""
