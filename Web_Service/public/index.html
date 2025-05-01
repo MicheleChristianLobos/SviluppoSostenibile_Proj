@@ -3,37 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Electricity Map</title>
+  <title>Air Quality Map</title>
   <script src="https://cdn.jsdelivr.net/npm/leaflet"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css" />
   <style>
-    #electricityMap {
+    #map {
       height: 100vh;
       width: 100%;
     }
   </style>
 </head>
 <body>
-  <div id="electricityMap"></div>
+  <div id="map"></div>
   <script>
-    const map = L.map('electricityMap').setView([51.505, -0.09], 5); // Cambia latitudine e longitudine secondo necessità
+    const map = L.map('map').setView([37.7749, -122.4194], 5); // Vista iniziale su San Francisco
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
     }).addTo(map);
 
-    fetch('/api/hourly-data')
-      .then(response => response.json())
-      .then(data => {
-        data.forEach(entry => {
-          const { latitude, longitude, carbonIntensity } = entry;
-          const color = carbonIntensity > 500 ? 'red' : carbonIntensity > 300 ? 'orange' : 'green';
-          L.circle([latitude, longitude], {
-            color,
-            radius: 5000,
-          }).addTo(map).bindPopup(`Carbon Intensity: ${carbonIntensity} gCO₂/kWh`);
-        });
-      })
-      .catch(error => console.error('Errore:', error));
+    let currentMarker = null; // Variabile per memorizzare il marker corrente
+
+    // Funzione per ottenere la qualità dell'aria
+    function getAirQuality(lat, lon) {
+      fetch(`http://localhost:3000/api/air-quality?lat=${lat}&lon=${lon}`)
+        .then(response => response.json())
+        .then(data => {
+          const { list } = data;
+          if (list && list.length > 0) {
+            const airQuality = list[0];
+            const { main, components } = airQuality;
+
+            // Rimuovi il marker precedente, se esiste
+            if (currentMarker) {
+              map.removeLayer(currentMarker);
+            }
+
+            // Aggiungi un nuovo marker con i dati della qualità dell'aria
+            currentMarker = L.marker([lat, lon])
+              .addTo(map)
+              .bindPopup(`
+                <b>Qualità dell'aria</b><br>
+                AQI: ${main.aqi}<br>
+                CO: ${components.co} µg/m³<br>
+                NO: ${components.no} µg/m³<br>
+                NO2: ${components.no2} µg/m³<br>
+                O3: ${components.o3} µg/m³<br>
+                SO2: ${components.so2} µg/m³<br>
+                PM2.5: ${components.pm2_5} µg/m³<br>
+                PM10: ${components.pm10} µg/m³<br>
+                NH3: ${components.nh3} µg/m³
+              `)
+              .openPopup();
+          }
+        })
+        .catch(error => console.error('Errore nella richiesta:', error));
+    }
+
+    // Ottenere la posizione attuale dell'utente
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          map.setView([latitude, longitude], 10); // Centra la mappa sulla posizione dell'utente
+          getAirQuality(latitude, longitude); // Ottieni la qualità dell'aria per la posizione attuale
+        },
+        error => {
+          console.error('Errore nella geolocalizzazione:', error);
+        }
+      );
+    } else {
+      console.error('Geolocalizzazione non supportata dal browser');
+    }
+
+    // Aggiungi un evento per selezionare una città cliccando sulla mappa
+    map.on('click', function (e) {
+      const { lat, lng } = e.latlng;
+      getAirQuality(lat, lng); // Ottieni la qualità dell'aria per la posizione cliccata
+    });
   </script>
 </body>
 </html>
