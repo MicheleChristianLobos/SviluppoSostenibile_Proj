@@ -32,6 +32,7 @@
 
       <!--Canvas => utile per contenere elementi bitmap e le loro caratteristiche di risoluzione (Grafico a torta)-->
       <canvas id="airQualityChart" width="400" height="400"></canvas>
+      <p id="punteggio"></p>
     </div>
   </div>
 
@@ -80,11 +81,25 @@
           }
         })
         .catch(error => console.error('Errore nella richiesta:', error));
+
+        punteggio = document.getElementById("punteggio");
+        punteggio.innerHTML(calcoloQualita(components));
+        
     }
 
     function calcoloQualita(components)
     {
-      
+      //Calcolo del punteggio di qualità dell'aria con pesi adeguati per ciascun elemento
+      const punteggioTotale = 
+        (components.pm2_5 * 0.9) + 
+        (components.pm10 * 0.7) + 
+        (components.no2 * 0.8) + 
+        (components.o3 * 0.6) + 
+        (components.co * 0.5) + 
+        (components.so2 * 0.7) + 
+        (components.nh3 * 0.4);
+
+        return punteggioTotale;
     }
 
     //Grafico a torta nella colonna a destra della pagina
