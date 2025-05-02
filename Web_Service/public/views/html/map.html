@@ -3,40 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Air Quality Map</title>
-  <script src="https://cdn.jsdelivr.net/npm/leaflet"></script>
+  <title>Mappa</title>
+
+  <!--Char.js (grafico)-->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!--Leaflet (mappa)-->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css" />
+
   <style>
     #map {
       height: 100%;
       width: 100%;
     }
   </style>
+  
 </head>
 <body>
   <div style="display: flex; height: 100vh;">
-    <!-- Mappa -->
+
+    <!--Mappa interattiva-->
     <div id="map" style="flex: 2;"></div>
 
-    <!-- Colonna per il grafico -->
+    <!--Colonna dove si trova il grafico a torta-->
     <div style="flex: 1; padding: 10px; background-color: #f9f9f9; border-left: 1px solid #ddd;">
-      <h3>Qualità dell'Aria</h3>
+      <h1>Qualità dell'Aria</h1>
+
+      <!--Canvas => utile per contenere elementi bitmap e le loro caratteristiche di risoluzione (Grafico a torta)-->
       <canvas id="airQualityChart" width="400" height="400"></canvas>
     </div>
   </div>
+
+  <!--Inizio JS-->
   <script>
-    const map = L.map('map').setView([37.7749, -122.4194], 5); // Vista iniziale su San Francisco
+    const map = L.map('map').setView([37.7749, -122.4194], 5);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
     }).addTo(map);
 
-    let currentMarker = null; // Variabile per memorizzare il marker corrente
-    let airQualityChart = null; // Variabile per il grafico
+    let currentMarker = null; //Marker sulla mappa
+    let airQualityChart = null; //Grafico a torta nella colonna destra
 
-    // Funzione per ottenere la qualità dell'aria
+    //Per ottenere i dati sulla qualità dell'aria (chiedendo localhost:3000/air al server)
     function getAirQuality(lat, lon) {
-      fetch(`http://localhost:3000/api/air-quality?lat=${lat}&lon=${lon}`)
+      fetch(`http://localhost:3000/air?lat=${lat}&lon=${lon}`)
         .then(response => response.json())
         .then(data => {
           const { list } = data;
@@ -44,12 +55,12 @@
             const airQuality = list[0];
             const { main, components } = airQuality;
 
-            // Rimuovi il marker precedente, se esiste
-            if (currentMarker) {
-              map.removeLayer(currentMarker);
+            //Se c'è un marker sulla mappa...
+            if (currentMarker) { 
+              map.removeLayer(currentMarker); //...lo rimuove per poi aggiungere il nuovo (in questo modo c'è solo 1 marker nella mappa)
             }
 
-            // Aggiungi un nuovo marker con i dati della qualità dell'aria
+            //Creazione del marker con i dati (il bind popup permette solo di vedere i dati quando schiacchi sopra il marker)
             currentMarker = L.marker([lat, lon])
               .addTo(map)
               .bindPopup(`
@@ -64,16 +75,19 @@
                 PM10: ${components.pm10} µg/m³<br>
                 NH3: ${components.nh3} µg/m³
               `)
-              .openPopup();
-
-            // Aggiorna il grafico con i dati ricevuti
+            //Mostra sul grafico a torta i dati ricevuti
             updateAirQualityChart(components);
           }
         })
         .catch(error => console.error('Errore nella richiesta:', error));
     }
 
-    // Funzione per aggiornare il grafico
+    function calcoloQualita(components)
+    {
+      
+    }
+
+    //Grafico a torta nella colonna a destra della pagina
     function updateAirQualityChart(components) {
       const data = {
         labels: ['CO', 'NO', 'NO2', 'O3', 'SO2', 'PM2.5', 'PM10', 'NH3'],
@@ -92,13 +106,17 @@
           backgroundColor: [
             '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
             '#9966FF', '#FF9F40', '#FFCD56', '#C9CBCF'
+            /*//Con alcuni colori dell'agenda 2030 (orribile)
+            '#e5233d', '#1c97d3', '#f89c2d', '#59ba47',
+            '#f16b2c', '#a31c45', '#14496b', '#e01483'
+            */
           ],
-          hoverOffset: 4
+          hoverOffset: 8 //Effetto di espansione della fetta di grafico quando ci si va sopra con il mouse
         }]
       };
 
       const config = {
-        type: 'pie',
+        type: 'pie',  //"doughnut","radar","line","bar","pie"
         data: data,
         options: {
           responsive: true,
@@ -117,37 +135,44 @@
         }
       };
 
-      // Distruggi il grafico precedente, se esiste
+      //Distruggi il grafico precedente, se esiste
       if (airQualityChart) {
         airQualityChart.destroy();
       }
 
-      // Crea un nuovo grafico
+      //Crea un nuovo grafico
       const ctx = document.getElementById('airQualityChart').getContext('2d');
       airQualityChart = new Chart(ctx, config);
     }
 
-    // Ottenere la posizione attuale dell'utente
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const { latitude, longitude } = position.coords;
-          map.setView([latitude, longitude], 10); // Centra la mappa sulla posizione dell'utente
-          getAirQuality(latitude, longitude); // Ottieni la qualità dell'aria per la posizione attuale
-        },
-        error => {
-          console.error('Errore nella geolocalizzazione:', error);
-        }
-      );
-    } else {
-      console.error('Geolocalizzazione non supportata dal browser');
-    }
+    currentPosition();
 
-    // Aggiungi un evento per selezionare una città cliccando sulla mappa
+    //Aggiungi un evento per selezionare una città cliccando sulla mappa
     map.on('click', function (e) {
       const { lat, lng } = e.latlng;
-      getAirQuality(lat, lng); // Ottieni la qualità dell'aria per la posizione cliccata
+      getAirQuality(lat, lng); //Ottieni la qualità dell'aria per la posizione cliccata
     });
+
+
+    //Per posizionare la visuale della mappa sulla posizione attuale dell'utente
+    function currentPosition()
+    {
+      //Posizione attuale dell'utente
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const { latitude, longitude } = position.coords;
+            map.setView([latitude, longitude], 10); //Centra la mappa sulla posizione dell'utente
+            getAirQuality(latitude, longitude); //Ottieni la qualità dell'aria per la posizione attuale
+          },
+          error => {
+            console.error('Errore nella geolocalizzazione:', error);
+          }
+        );
+      } else {
+        console.error('Geolocalizzazione non supportata dal browser');
+      }
+    }
   </script>
 </body>
 </html>

@@ -7,32 +7,24 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 
-app.use(cors());
-
-// Configura il motore di template Pug
-//app.set('view engine', 'html');
-
-
-// Servire i file statici dalla cartella "public"
+//app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Endpoint per ottenere i dati della qualità dell'aria
-app.get('/api/air-quality', async (req, res) => {
+app.get('/air', async (req, res) => {
   try {
-    const apiKey = process.env.OPENWEATHERMAP_API_KEY; // Chiave API da .env
-    const lat = req.query.lat || 37.7749; // Latitudine (default: San Francisco)
-    const lon = req.query.lon || -122.4194; // Longitudine (default: San Francisco)
+    const apiKey = process.env.OPENWEATHERMAP_API_KEY; 
+    const lat = req.query.lat || 37.7749;
+    const lon = req.query.lon || -122.4194;
     const apiUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
     const response = await axios.get(apiUrl);
-    res.json(response.data); // Restituisci i dati al frontend
+    res.json(response.data);
   } catch (error) {
     console.error('Errore nella richiesta API:', error.message);
     res.status(500).json({ error: 'Errore nel recupero dei dati' });
   }
 });
 
-// Route per servire il file index.pug
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'views', 'html', 'map.html'));
 });
