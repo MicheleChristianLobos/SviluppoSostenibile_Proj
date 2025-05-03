@@ -163,26 +163,15 @@
     legend.onAdd = function (map) {
       const div = L.DomUtil.create('div', 'info legend');
       div.innerHTML = `
-        <b>Glossario Qualità dell'Aria</b>
         <div id="punteggio" class="punteggio">
         <table>
           <thead>
             <tr>
-              <th>Nome qualitativo</th>
+              <th>AQI</th>
               <th>Indice (AQI)</th>
-              <th colspan="6">Concentrazione di inquinanti in μg/m<sup>3</sup></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td colspan="2"></td>
-              <td>SO<sub>2</sub></td>
-              <td>NO<sub>2</sub></td>
-              <td>PM<sub>10</sub></td>
-              <td>PM<sub>2.5</sub></td>
-              <td>O<sub>3</sub></td>
-              <td>CO</td>
-            </tr>
             <tr>
               <td>Buona</td>
               <td>1</td>
@@ -194,32 +183,14 @@
             <tr>
               <td>Moderata</td>
               <td>3</td>
-              <td>[80; 250)</td>
-              <td>[70; 150)</td>
-              <td>[50; 100)</td>
-              <td>[25; 50)</td>
-              <td>[100; 140)</td>
-              <td>[9400-12400)</td>
             </tr>
             <tr>
               <td>Scarsa</td>
               <td>4</td>
-              <td>[250; 350)</td>
-              <td>[150; 200)</td>
-              <td>[100; 200)</td>
-              <td>[50; 75)</td>
-              <td>[140; 180)</td>
-              <td>[12400; 15400)</td>
             </tr>
             <tr>
               <td>Veramente scarsa</td>
               <td>5</td>
-              <td>⩾350</td>
-              <td>⩾200</td>
-              <td>⩾200</td>
-              <td>⩾75</td>
-              <td>⩾180</td>
-              <td>⩾15400</td>
             </tr>
           </tbody>
         </table>
