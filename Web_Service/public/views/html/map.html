@@ -8,8 +8,8 @@
   <!--Char.js (grafico)-->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
-  <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
-  <script src="js/leaflet.awesome-markers.js"></script>
+  <!--<link rel="stylesheet" href="css/leaflet.awesome-markers.css">
+  <script src="js/leaflet.awesome-markers.js"></script>-->
 
   <!--Leaflet (mappa)-->
   <script src="https://cdn.jsdelivr.net/npm/leaflet"></script>
@@ -58,79 +58,7 @@
       <!--Canvas => utile per contenere elementi bitmap e le loro caratteristiche di risoluzione (Grafico a torta)-->
       <canvas id="airQualityChart" width="400" height="400"></canvas>
       
-      <div id="punteggio" class="punteggio">
-        <table>
-          <thead>
-            <tr>
-              <th>Nome qualitativo</th>
-              <th>Indice (AQI)</th>
-              <th colspan="6">Concentrazione di inquinanti in μg/m<sup>3</sup></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="2"></td>
-              <td>SO<sub>2</sub></td>
-              <td>NO<sub>2</sub></td>
-              <td>PM<sub>10</sub></td>
-              <td>PM<sub>2.5</sub></td>
-              <td>O<sub>3</sub></td>
-              <td>CO</td>
-            </tr>
-            <tr>
-              <td>Buona</td>
-              <td>1</td>
-              <td>[0; 20)</td>
-              <td>[0; 40)</td>
-              <td>[0; 20)</td>
-              <td>[0; 10)</td>
-              <td>[0; 60)</td>
-              <td>[0; 4400)</td>
-            </tr>
-            <tr>
-              <td>Giusta</td>
-              <td>2</td>
-              <td>[20; 80)</td>
-              <td>[40; 70)</td>
-              <td>[20; 50)</td>
-              <td>[10; 25)</td>
-              <td>[60; 100)</td>
-              <td>[4400; 9400)</td>
-            </tr>
-            <tr>
-              <td>Moderata</td>
-              <td>3</td>
-              <td>[80; 250)</td>
-              <td>[70; 150)</td>
-              <td>[50; 100)</td>
-              <td>[25; 50)</td>
-              <td>[100; 140)</td>
-              <td>[9400-12400)</td>
-            </tr>
-            <tr>
-              <td>Scarsa</td>
-              <td>4</td>
-              <td>[250; 350)</td>
-              <td>[150; 200)</td>
-              <td>[100; 200)</td>
-              <td>[50; 75)</td>
-              <td>[140; 180)</td>
-              <td>[12400; 15400)</td>
-            </tr>
-            <tr>
-              <td>Veramente scarsa</td>
-              <td>5</td>
-              <td>⩾350</td>
-              <td>⩾200</td>
-              <td>⩾200</td>
-              <td>⩾75</td>
-              <td>⩾180</td>
-              <td>⩾15400</td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
+      
       
     </div>
 
@@ -179,14 +107,14 @@
               `)
 
             // Definizione di un'icona personalizzata
-            const dynamicIcon = L.icon({
+            /*const dynamicIcon = L.icon({
               iconUrl: iconUrl,
               iconSize: [25, 41],
               iconAnchor: [12, 41],
               popupAnchor: [1, -34],
               shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
               shadowSize: [41, 41]
-            });
+            });*/
 
             /*  //Esempio marker colorato
             // Creates a red marker with the coffee icon
@@ -203,20 +131,24 @@
 
             if(main.aqi == 1) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Buona)";
-              iconUrl = 'green-marker.png';
+              //iconUrl = 'green-marker.png';
             } else if (main.aqi == 2) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Giusta)";
-              iconUrl = 'yellow-marker.png';
+              //iconUrl = 'yellow-marker.png';
             } else if (main.aqi == 3) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Moderata)";
-              iconUrl = 'orange-marker.png';
+              //iconUrl = 'orange-marker.png';
             } else if (main.aqi == 4) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Scarsa)";
-              iconUrl = 'red-marker.png';
+              //iconUrl = 'red-marker.png';
             } else if (main.aqi == 5) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria <br>(Veramente scarsa)";
-              iconUrl = 'purple-marker.png';
+              //iconUrl = 'purple-marker.png';
             }
+
+
+
+
           }
         })
         .catch(error => console.error('Errore nella richiesta:', error));
@@ -225,6 +157,79 @@
     }
 
 
+    
+    const legend = L.control({ position: 'bottomright' });
+
+    legend.onAdd = function (map) {
+      const div = L.DomUtil.create('div', 'info legend');
+      div.innerHTML = `
+        <b>Glossario Qualità dell'Aria</b>
+        <div id="punteggio" class="punteggio">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome qualitativo</th>
+              <th>Indice (AQI)</th>
+              <th colspan="6">Concentrazione di inquinanti in μg/m<sup>3</sup></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2"></td>
+              <td>SO<sub>2</sub></td>
+              <td>NO<sub>2</sub></td>
+              <td>PM<sub>10</sub></td>
+              <td>PM<sub>2.5</sub></td>
+              <td>O<sub>3</sub></td>
+              <td>CO</td>
+            </tr>
+            <tr>
+              <td>Buona</td>
+              <td>1</td>
+            </tr>
+            <tr>
+              <td>Giusta</td>
+              <td>2</td>
+            </tr>
+            <tr>
+              <td>Moderata</td>
+              <td>3</td>
+              <td>[80; 250)</td>
+              <td>[70; 150)</td>
+              <td>[50; 100)</td>
+              <td>[25; 50)</td>
+              <td>[100; 140)</td>
+              <td>[9400-12400)</td>
+            </tr>
+            <tr>
+              <td>Scarsa</td>
+              <td>4</td>
+              <td>[250; 350)</td>
+              <td>[150; 200)</td>
+              <td>[100; 200)</td>
+              <td>[50; 75)</td>
+              <td>[140; 180)</td>
+              <td>[12400; 15400)</td>
+            </tr>
+            <tr>
+              <td>Veramente scarsa</td>
+              <td>5</td>
+              <td>⩾350</td>
+              <td>⩾200</td>
+              <td>⩾200</td>
+              <td>⩾75</td>
+              <td>⩾180</td>
+              <td>⩾15400</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      `;
+      return div;
+    };
+
+    legend.addTo(map);
 
     //Grafico a torta nella colonna a destra della pagina
     function updateAirQualityChart(components) {
