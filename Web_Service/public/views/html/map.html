@@ -7,6 +7,9 @@
 
   <!--Char.js (grafico)-->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css">
+  <link rel="stylesheet" href="css/leaflet.awesome-markers.css">
+  <script src="js/leaflet.awesome-markers.js"></script>
 
   <!--Leaflet (mappa)-->
   <script src="https://cdn.jsdelivr.net/npm/leaflet"></script>
@@ -16,6 +19,28 @@
     #map {
       height: 100%;
       width: 100%;
+    }
+    .punteggio {
+      padding-top: 4%;
+      padding-bottom: 4%;
+    }
+    .punteggio table {
+      border-collapse: collapse; /* Per unire i bordi delle celle */
+      width: 100%; /* Opzionale: per rendere la tabella larga quanto il contenitore */
+    }
+
+    .punteggio th, .punteggio td {
+      border: 1px solid #ddd; /* Colore e stile del bordo */
+      padding: 8px; /* Spaziatura interna delle celle */
+    }
+
+    .punteggio th {
+      background-color: #f2f2f2; /* Colore di sfondo per l'intestazione */
+      text-align: center; /* Allineamento del testo */
+    }
+
+    .punteggio td {
+      text-align: center; /* Allineamento del testo nelle celle */
     }
   </style>
   
@@ -28,12 +53,88 @@
 
     <!--Colonna dove si trova il grafico a torta-->
     <div style="flex: 1; padding: 10px; background-color: #f9f9f9; border-left: 1px solid #ddd;">
-      <h1>Qualità dell'Aria</h1>
+      <h1 id="qualitativo"></h1>
 
       <!--Canvas => utile per contenere elementi bitmap e le loro caratteristiche di risoluzione (Grafico a torta)-->
       <canvas id="airQualityChart" width="400" height="400"></canvas>
-      <p id="punteggio"></p>
+      
+      <div id="punteggio" class="punteggio">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome qualitativo</th>
+              <th>Indice (AQI)</th>
+              <th colspan="6">Concentrazione di inquinanti in μg/m<sup>3</sup></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="2"></td>
+              <td>SO<sub>2</sub></td>
+              <td>NO<sub>2</sub></td>
+              <td>PM<sub>10</sub></td>
+              <td>PM<sub>2.5</sub></td>
+              <td>O<sub>3</sub></td>
+              <td>CO</td>
+            </tr>
+            <tr>
+              <td>Buona</td>
+              <td>1</td>
+              <td>[0; 20)</td>
+              <td>[0; 40)</td>
+              <td>[0; 20)</td>
+              <td>[0; 10)</td>
+              <td>[0; 60)</td>
+              <td>[0; 4400)</td>
+            </tr>
+            <tr>
+              <td>Giusta</td>
+              <td>2</td>
+              <td>[20; 80)</td>
+              <td>[40; 70)</td>
+              <td>[20; 50)</td>
+              <td>[10; 25)</td>
+              <td>[60; 100)</td>
+              <td>[4400; 9400)</td>
+            </tr>
+            <tr>
+              <td>Moderata</td>
+              <td>3</td>
+              <td>[80; 250)</td>
+              <td>[70; 150)</td>
+              <td>[50; 100)</td>
+              <td>[25; 50)</td>
+              <td>[100; 140)</td>
+              <td>[9400-12400)</td>
+            </tr>
+            <tr>
+              <td>Scarsa</td>
+              <td>4</td>
+              <td>[250; 350)</td>
+              <td>[150; 200)</td>
+              <td>[100; 200)</td>
+              <td>[50; 75)</td>
+              <td>[140; 180)</td>
+              <td>[12400; 15400)</td>
+            </tr>
+            <tr>
+              <td>Veramente scarsa</td>
+              <td>5</td>
+              <td>⩾350</td>
+              <td>⩾200</td>
+              <td>⩾200</td>
+              <td>⩾75</td>
+              <td>⩾180</td>
+              <td>⩾15400</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      
     </div>
+
+    
   </div>
 
   <!--Inizio JS-->
@@ -67,40 +168,63 @@
               .bindPopup(`
                 <b>Qualità dell'aria</b><br>
                 AQI: ${main.aqi}<br>
-                CO: ${components.co} µg/m³<br>
-                NO: ${components.no} µg/m³<br>
-                NO2: ${components.no2} µg/m³<br>
-                O3: ${components.o3} µg/m³<br>
-                SO2: ${components.so2} µg/m³<br>
                 PM2.5: ${components.pm2_5} µg/m³<br>
+                NO2: ${components.no2} µg/m³<br>
                 PM10: ${components.pm10} µg/m³<br>
+                SO2: ${components.so2} µg/m³<br>
+                O3: ${components.o3} µg/m³<br>
+                CO: ${components.co} µg/m³<br>
                 NH3: ${components.nh3} µg/m³
+                NO: ${components.no} µg/m³<br>
               `)
+
+            // Definizione di un'icona personalizzata
+            const dynamicIcon = L.icon({
+              iconUrl: iconUrl,
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+              shadowSize: [41, 41]
+            });
+
+            /*  //Esempio marker colorato
+            // Creates a red marker with the coffee icon
+            var redMarker = L.AwesomeMarkers.icon({
+              icon: 'coffee',
+              markerColor: 'red'
+            });
+                
+            L.marker([51.941196,4.512291], {icon: redMarker}).addTo(map);
+            */
+            
             //Mostra sul grafico a torta i dati ricevuti
             updateAirQualityChart(components);
+
+            if(main.aqi == 1) {
+              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Buona)";
+              iconUrl = 'green-marker.png';
+            } else if (main.aqi == 2) {
+              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Giusta)";
+              iconUrl = 'yellow-marker.png';
+            } else if (main.aqi == 3) {
+              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Moderata)";
+              iconUrl = 'orange-marker.png';
+            } else if (main.aqi == 4) {
+              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Scarsa)";
+              iconUrl = 'red-marker.png';
+            } else if (main.aqi == 5) {
+              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria <br>(Veramente scarsa)";
+              iconUrl = 'purple-marker.png';
+            }
           }
         })
         .catch(error => console.error('Errore nella richiesta:', error));
 
-        punteggio = document.getElementById("punteggio");
-        punteggio.innerHTML(calcoloQualita(components));
         
     }
 
-    function calcoloQualita(components)
-    {
-      //Calcolo del punteggio di qualità dell'aria con pesi adeguati per ciascun elemento
-      const punteggioTotale = 
-        (components.pm2_5 * 0.9) + 
-        (components.pm10 * 0.7) + 
-        (components.no2 * 0.8) + 
-        (components.o3 * 0.6) + 
-        (components.co * 0.5) + 
-        (components.so2 * 0.7) + 
-        (components.nh3 * 0.4);
 
-        return punteggioTotale;
-    }
 
     //Grafico a torta nella colonna a destra della pagina
     function updateAirQualityChart(components) {
