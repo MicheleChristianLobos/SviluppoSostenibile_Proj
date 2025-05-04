@@ -106,58 +106,26 @@
                 NO: ${components.no} µg/m³<br>
               `)
 
-            // Definizione di un'icona personalizzata
-            /*const dynamicIcon = L.icon({
-              iconUrl: iconUrl,
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-              popupAnchor: [1, -34],
-              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-              shadowSize: [41, 41]
-            });*/
-
-            /*  //Esempio marker colorato
-            // Creates a red marker with the coffee icon
-            var redMarker = L.AwesomeMarkers.icon({
-              icon: 'coffee',
-              markerColor: 'red'
-            });
-                
-            L.marker([51.941196,4.512291], {icon: redMarker}).addTo(map);
-            */
-            
             //Mostra sul grafico a torta i dati ricevuti
             updateAirQualityChart(components);
 
             if(main.aqi == 1) {
-              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Buona)";
-              //iconUrl = 'green-marker.png';
+              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Discreta)";
             } else if (main.aqi == 2) {
-              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Giusta)";
-              //iconUrl = 'yellow-marker.png';
+              document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Buona)";
             } else if (main.aqi == 3) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Moderata)";
-              //iconUrl = 'orange-marker.png';
             } else if (main.aqi == 4) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Scarsa)";
-              //iconUrl = 'red-marker.png';
             } else if (main.aqi == 5) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria <br>(Veramente scarsa)";
-              //iconUrl = 'purple-marker.png';
             }
-
-
-
-
           }
         })
         .catch(error => console.error('Errore nella richiesta:', error));
-
-        
     }
 
-
-    
+    //Legenda sulla mappa riguardante i punteggi a seconda dell'AQI
     const legend = L.control({ position: 'bottomright' });
 
     legend.onAdd = function (map) {
@@ -173,11 +141,11 @@
           </thead>
           <tbody>
             <tr>
-              <td>Buona</td>
+              <td>Discreta</td>
               <td>1</td>
             </tr>
             <tr>
-              <td>Giusta</td>
+              <td>Buona</td>
               <td>2</td>
             </tr>
             <tr>
@@ -282,10 +250,22 @@
           },
           error => {
             console.error('Errore nella geolocalizzazione:', error);
+
+            //Seleziona come punto di partenza Quito, Il Centro del Mondo
+            const defaultLat = -0.2204; //Coordinate di default
+            const defaultLon = -78.5124; //Coordinate di default
+            map.setView([defaultLat, defaultLon], 10);
+            getAirQuality(defaultLat, defaultLon);
           }
         );
       } else {
         console.error('Geolocalizzazione non supportata dal browser');
+
+        //Seleziona come punto di partenza Quito, Il Centro del Mondo
+        const defaultLat = -0.2204; //Coordinate di default
+        const defaultLon = -78.5124; //Coordinate di default
+        map.setView([defaultLat, defaultLon], 10);
+        getAirQuality(defaultLat, defaultLon);
       }
     }
   </script>

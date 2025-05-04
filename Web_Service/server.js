@@ -5,17 +5,20 @@ const axios = require('axios');
 const path = require('path');
 const mymodule = require('./moduli/api');
 
-const app = express();
-const PORT = 3000;
+const latDefault = process.env.LATITUDE;
+const lonDefault = process.env.LONGITUDE;
 
-//app.use(cors());
+const PORT = process.env.PORT;
+const app = express();
+
+app.use(cors());  //Abilitato "Cross Origin Resource Sharing"
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/air', async (req, res) => {
   try {
     const apiKey = process.env.OPENWEATHERMAP_API_KEY; 
-    const lat = req.query.lat || 37.7749;
-    const lon = req.query.lon || -122.4194;
+    const lat = req.query.lat || latDefault;
+    const lon = req.query.lon || lonDefault;
     const apiUrl = `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
     const response = await axios.get(apiUrl);
@@ -31,7 +34,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api', function (req, res) {
-  console.log("Richiesta a /api");
+  //Prende i parametri GET latitudine e longitudine
+  const lat = req.query.lat || latDefault;
+  const lon = req.query.lon || lonDefault;
+  
+  console.log(`Richiesta a /api?lat=${lat}&lon=${lon})`);
+
   res.status(200).json(mymodule.api());
 });
 
@@ -40,5 +48,5 @@ app.use("*", function (req, res) {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server in esecuzione su http://localhost:${PORT}`);
+  console.log(`Server in esecuzione su http://${process.env.IP}:${PORT}`);
 });

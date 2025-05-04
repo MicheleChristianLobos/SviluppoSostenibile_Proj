@@ -9,7 +9,7 @@
 //tutte le funzioni non esportate nello script del modulo rimarranno private
 //possono pertanto essere utilizzate da altre funzioni
 //del modulo
-exports.fraseDelGiorno=function () {
+exports.api=function (lat, lon) {
 	const frase= [
 	'Che cosa hanno in comune un televisore e una formica? Le antenne!',
 	'Qual è la città preferita dai ragni? Mosca!',
