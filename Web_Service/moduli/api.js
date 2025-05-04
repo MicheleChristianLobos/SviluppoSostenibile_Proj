@@ -9,9 +9,7 @@
 //tutte le funzioni non esportate nello script del modulo rimarranno private
 //possono pertanto essere utilizzate da altre funzioni
 //del modulo
-
-
-/*exports.fraseDelGiorno=function () {
+exports.fraseDelGiorno=function () {
 	const frase= [
 	'Che cosa hanno in comune un televisore e una formica? Le antenne!',
 	'Qual è la città preferita dai ragni? Mosca!',
@@ -22,13 +20,4 @@
 	return {
 		messaggio:frase[indice]
 	};
-}*/
-
-fetch('https://api.electricitymap.org/v3/carbon-intensity/latest?zone=IT', {
-    method: 'GET',
-    headers: {
-        'auth-token': 'RMJjL4r10v46DO6EElam'
-    }
-})
-.then(response => response.json())
-.then(data => console.log(data));
+}
