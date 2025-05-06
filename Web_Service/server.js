@@ -45,7 +45,7 @@ app.get('/sviluppo', (req, res) => {
 });
 
 
-app.get('/html/map', (req, res) => {
+app.get('/mappa', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'views', 'html', 'map.html'));
 });
 
