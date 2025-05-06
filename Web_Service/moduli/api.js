@@ -37,7 +37,7 @@ exports.api = async function (lat, lon) {
 
 
 //Per ottenere le coordinate di una determinata città tramite le API di openStreetMap (NON Leaflet)
-document.getElementById("checkAirQuality").addEventListener("click", async function () {
+/*document.getElementById("checkAirQuality").addEventListener("click", async function () {
     const citta = document.getElementById("citta").value;
 
     if (!citta) {
@@ -60,4 +60,4 @@ document.getElementById("checkAirQuality").addEventListener("click", async funct
         console.error("Errore nella richiesta:", error);
         alert("Errore nel recupero dei dati.");
     }
-});
+});*/
