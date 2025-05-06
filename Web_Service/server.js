@@ -11,26 +11,6 @@ const lonDefault = process.env.LONGITUDE;
 const PORT = process.env.PORT;
 const app = express();
 
-async function getCoords(cityName) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName)}`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.length > 0) {
-            return {
-                lat: data[0].lat,
-                lon: data[0].lon
-            };
-        } else {
-            throw new Error("Città non trovata");
-        }
-    } catch (error) {
-        console.error("Errore nella geocodifica:", error);
-        return null;
-    }
-}
 
 
 app.use(cors());  //Abilitato "Cross Origin Resource Sharing"
