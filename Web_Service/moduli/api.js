@@ -37,23 +37,27 @@ exports.api = async function (lat, lon) {
 
 
 //Per ottenere le coordinate di una determinata città tramite le API di openStreetMap (NON Leaflet)
-async function getCoords(citta) {
-	const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(citta)}`;
+document.getElementById("checkAirQuality").addEventListener("click", async function () {
+    const citta = document.getElementById("citta").value;
 
-	try {
-		const response = await fetch(url);
-		const data = await response.json();
+    if (!citta) {
+        alert("Inserisci il nome della città!");
+        return;
+    }
 
-		if (data.length > 0) {
-			return {
-				lat: data[0].lat,
-				lon: data[0].lon
-			};
-		} else {
-			throw new Error("Città non trovata");
-		}
-	} catch (error) {
-		console.error("Errore nella geocodifica:", error);
-		return null;
-	}
-}
+    try {
+        const response = await fetch(`/geocode?citta=${encodeURIComponent(citta)}`);
+        const data = await response.json();
+
+        if (data.error) {
+            alert("Errore: " + data.error);
+        } else {
+            document.getElementById("lat").value = data.lat;
+            document.getElementById("lon").value = data.lon;
+            alert(`Coordinate di ${citta}: Lat ${data.lat}, Lon ${data.lon}`);
+        }
+    } catch (error) {
+        console.error("Errore nella richiesta:", error);
+        alert("Errore nel recupero dei dati.");
+    }
+});

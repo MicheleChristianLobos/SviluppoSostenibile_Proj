@@ -5,6 +5,7 @@ html(lang="it")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Geolocalizzazione Inquinamento
     link(rel="stylesheet", href="../css/style.css")
+    script(src=".../moduli/api.js") 
   body
     header
       .container
@@ -27,9 +28,9 @@ html(lang="it")
             input(type="text" id="lon" name="lon" required placeholder="es. 9.1900")
             br
             label(for="citta") Citta: 
-            input(type="text" id="citta" name="citta" required placeholder="es. Parma")
+            input(type="text" id="citta" name="citta" placeholder="es. Parma")
             br
-            button(type="submit") Controlla Qualità dell'Aria
+            button(type="submit" id="checkQualitaAria") Controlla Qualità dell'Aria
 
     footer#contatti
       .container
