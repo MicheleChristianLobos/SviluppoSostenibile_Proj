@@ -64,7 +64,7 @@ app.get('/sviluppo', (req, res) => {
   res.render('sviluppo'); // Renderizza public/views/pug/sviluppo.pug
 });
 
-// (opzionale) Se hai altre pagine HTML nella cartella html
+
 app.get('/html/map', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'views', 'html', 'map.html'));
 });
