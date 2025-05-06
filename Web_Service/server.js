@@ -61,6 +61,10 @@ app.get('/api', function (req, res) {
   res.status(200).json(mymodule.api(lat, lon));
 });
 
+app.get('/geolocalizzazione', (req, res) => {
+  res.render('geolocalizzazione');
+});
+
 app.use("*", function (req, res) {
   res.status(404).send('Url non presente');
 });
