@@ -34,3 +34,26 @@ exports.api = async function (lat, lon) {
         return { error: "Impossibile recuperare i dati della qualità dell'aria" };
     }
 };
+
+
+//Per ottenere le coordinate di una determinata città tramite le API di openStreetMap (NON Leaflet)
+async function getCoords(citta) {
+	const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(citta)}`;
+
+	try {
+		const response = await fetch(url);
+		const data = await response.json();
+
+		if (data.length > 0) {
+			return {
+				lat: data[0].lat,
+				lon: data[0].lon
+			};
+		} else {
+			throw new Error("Città non trovata");
+		}
+	} catch (error) {
+		console.error("Errore nella geocodifica:", error);
+		return null;
+	}
+}
