@@ -31,12 +31,9 @@ app.get('/air', async (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'views', 'html', 'map.html'));
-});
 
 // Visualizza index.pug
-app.get('/index', (req, res) => {
+app.get('/', (req, res) => {
   res.render('index'); // Renderizza public/views/pug/index.pug
 });
 
