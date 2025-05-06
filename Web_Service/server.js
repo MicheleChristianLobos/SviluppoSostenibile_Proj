@@ -11,6 +11,28 @@ const lonDefault = process.env.LONGITUDE;
 const PORT = process.env.PORT;
 const app = express();
 
+async function getCoords(cityName) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName)}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.length > 0) {
+            return {
+                lat: data[0].lat,
+                lon: data[0].lon
+            };
+        } else {
+            throw new Error("Città non trovata");
+        }
+    } catch (error) {
+        console.error("Errore nella geocodifica:", error);
+        return null;
+    }
+}
+
+
 app.use(cors());  //Abilitato "Cross Origin Resource Sharing"
 app.set('views', path.join(__dirname, 'public', 'views', 'pug'));
 app.set('view engine', 'pug');
@@ -48,15 +70,21 @@ app.get('/html/map', (req, res) => {
 });
 
 
-app.get('/api', function (req, res) {
-  //Prende i parametri GET latitudine e longitudine
+app.get('/api', async function (req, res) {
   const lat = req.query.lat || latDefault;
   const lon = req.query.lon || lonDefault;
-  
-  console.log(`Richiesta a /api?lat=${lat}&lon=${lon})`);
 
-  res.status(200).json(mymodule.api(lat, lon));
+  console.log(`Richiesta a /api?lat=${lat}&lon=${lon}`);
+
+  try {
+      const response = await mymodule.api(lat, lon);
+      res.status(200).json(response);
+  } catch (error) {
+      console.error("Errore API:", error);
+      res.status(500).json({ error: "Errore nel recupero dei dati" });
+  }
 });
+
 
 app.get('/geolocalizzazione', (req, res) => {
   res.render('geolocalizzazione');
