@@ -55,7 +55,7 @@ app.get('/api', function (req, res) {
   
   console.log(`Richiesta a /api?lat=${lat}&lon=${lon})`);
 
-  res.status(200).json(mymodule.api());
+  res.status(200).json(mymodule.api(lat, lon));
 });
 
 app.get('/geolocalizzazione', (req, res) => {
