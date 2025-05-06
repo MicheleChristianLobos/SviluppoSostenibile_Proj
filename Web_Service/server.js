@@ -12,6 +12,8 @@ const PORT = process.env.PORT;
 const app = express();
 
 app.use(cors());  //Abilitato "Cross Origin Resource Sharing"
+app.set('views', path.join(__dirname, 'public', 'views', 'pug'));
+app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/air', async (req, res) => {
@@ -32,6 +34,22 @@ app.get('/air', async (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'views', 'html', 'map.html'));
 });
+
+// Visualizza index.pug
+app.get('/index', (req, res) => {
+  res.render('index'); // Renderizza public/views/pug/index.pug
+});
+
+// Visualizza sviluppo.pug
+app.get('/sviluppo', (req, res) => {
+  res.render('sviluppo'); // Renderizza public/views/pug/sviluppo.pug
+});
+
+// (opzionale) Se hai altre pagine HTML nella cartella html
+app.get('/html/map', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'views', 'html', 'map.html'));
+});
+
 
 app.get('/api', function (req, res) {
   //Prende i parametri GET latitudine e longitudine
