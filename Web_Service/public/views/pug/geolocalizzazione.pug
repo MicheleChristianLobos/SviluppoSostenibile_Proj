@@ -19,7 +19,8 @@ html(lang="it")
     main
       section#input-coord
         .container
-          h2 Inserisci Coordinate Geografiche
+          center
+            h2 Inserisci Coordinate Geografiche
           form(action="/air" method="get")
             label(for="lat") Latitudine: 
             input(type="text" id="lat" name="lat" required placeholder="es. 45.4642")
@@ -27,10 +28,8 @@ html(lang="it")
             label(for="lon") Longitudine: 
             input(type="text" id="lon" name="lon" required placeholder="es. 9.1900")
             br
-            label(for="citta") Citta: 
-            input(type="text" id="citta" name="citta" placeholder="es. Parma")
-            br
-            button(type="submit" formtarget="_blank" id="checkQualitaAria") Controlla Qualità dell'Aria
+            center
+              button(type="submit" formtarget="_blank" id="checkQualitaAria") Controlla Qualità dell'Aria
 
     footer#contatti
       .container
