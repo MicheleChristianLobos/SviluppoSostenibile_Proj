@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,31 +21,61 @@
       height: 100%;
       width: 100%;
     }
+
+    #qualitativo {
+      text-align: center;
+      font-family: 'Helvetica Neue';
+    }
+
     .punteggio {
       padding-top: 4%;
       padding-bottom: 4%;
     }
+
     .punteggio table {
-      border-collapse: collapse; /* Per unire i bordi delle celle */
-      width: 100%; /* Opzionale: per rendere la tabella larga quanto il contenitore */
+      border-collapse: collapse;
+      /* Per unire i bordi delle celle */
+      width: 100%;
+      /* Opzionale: per rendere la tabella larga quanto il contenitore */
     }
 
-    .punteggio th, .punteggio td {
-      border: 1px solid #ddd; /* Colore e stile del bordo */
-      background-color: #f2f2f2; /* Colore di sfondo per l'intestazione */
-      padding: 8px; /* Spaziatura interna delle celle */
+    .punteggio th,
+    .punteggio td {
+      border: 1px solid #ddd;
+      /* Colore e stile del bordo */
+      background-color: #f2f2f2;
+      /* Colore di sfondo per l'intestazione */
+      padding: 8px;
+      /* Spaziatura interna delle celle */
     }
 
     .punteggio th {
-      text-align: center; /* Allineamento del testo */
+      text-align: center;
+      /* Allineamento del testo */
     }
 
     .punteggio td {
-      text-align: center; /* Allineamento del testo nelle celle */
+      text-align: center;
+      /* Allineamento del testo nelle celle */
+    }
+
+    button.btn-home {
+      background-color: #f2f2f2;
+      color: black;
+      font-size: 14px;
+      width: fit-content;
+      border: 1px solid #ddd;
+      border-radius: 5%;
+    }
+
+    #home-btn-div {
+      margin-top: 20%;
+      text-align: center;
     }
   </style>
-  
+
 </head>
+
 <body>
   <div style="display: flex; height: 100vh;">
 
@@ -56,13 +87,9 @@
       <h1 id="qualitativo"></h1>
 
       <!--Canvas => utile per contenere elementi bitmap e le loro caratteristiche di risoluzione (Grafico a torta)-->
-      <canvas id="airQualityChart" width="400" height="400"></canvas>
-      
-      
-      
+      <canvas id="airQualityChart" width="400" height="400"></canvas><br>
+      <div id="home-btn-div"><button class="btn-home" onclick="window.location.href='/'">Torna alla Home Page</button></div>
     </div>
-
-    
   </div>
 
   <!--Inizio JS-->
@@ -86,7 +113,7 @@
             const { main, components } = airQuality;
 
             //Se c'è un marker sulla mappa...
-            if (currentMarker) { 
+            if (currentMarker) {
               map.removeLayer(currentMarker); //...lo rimuove per poi aggiungere il nuovo (in questo modo c'è solo 1 marker nella mappa)
             }
 
@@ -109,7 +136,7 @@
             //Mostra sul grafico a torta i dati ricevuti
             updateAirQualityChart(components);
 
-            if(main.aqi == 1) {
+            if (main.aqi == 1) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Discreta)";
             } else if (main.aqi == 2) {
               document.getElementById("qualitativo").innerHTML = "Qualità dell'Aria (Buona)";
@@ -209,7 +236,7 @@
             },
             tooltip: {
               callbacks: {
-                label: function(tooltipItem) {
+                label: function (tooltipItem) {
                   return `${tooltipItem.label}: ${tooltipItem.raw} µg/m³`;
                 }
               }
@@ -238,8 +265,7 @@
 
 
     //Per posizionare la visuale della mappa sulla posizione attuale dell'utente
-    function currentPosition()
-    {
+    function currentPosition() {
       //Posizione attuale dell'utente
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -270,4 +296,5 @@
     }
   </script>
 </body>
+
 </html>
