@@ -4,8 +4,7 @@ html(lang="it")
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Geolocalizzazione Inquinamento
-    link(rel="stylesheet", href="../css/style.css")
-    script(src=".../moduli/api.js") 
+    link(rel="stylesheet", href="/css")
   body
     header
       .container
@@ -21,7 +20,7 @@ html(lang="it")
         .container
           center
             h2 Inserisci Coordinate Geografiche
-          form(action="/air" method="get")
+          form(action="/api" method="get")
             label(for="lat") Latitudine: 
             input(type="text" id="lat" name="lat" required placeholder="es. 45.4642")
             br

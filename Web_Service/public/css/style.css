@@ -52,20 +52,18 @@
   }
   
   #hero {
-    background: url('https://source.unsplash.com/1600x500/?nature,sustainability') no-repeat center center/cover;
-    color: white;
+    background: url('/bg_foglie') no-repeat center center/cover;
     text-align: center;
     padding: 60px 20px;
   }
-  
+
   #hero h2 {
     font-size: 2.5em;
     margin-bottom: 10px;
-    color: black;
   }
 
-  #hero p {
-    color: black;
+  #hero h2, #hero p {
+    color: white;
   }
   
   #obiettivi ul {
