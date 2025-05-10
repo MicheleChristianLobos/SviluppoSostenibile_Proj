@@ -1,0 +1,24 @@
+doctype html
+html(lang="it")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title #{title}
+    link(rel="stylesheet", href="/css")
+  body
+    header
+      .container
+        h1 Sviluppo Sostenibile
+        nav
+          ul
+            li: a(href="/") Home
+            li: a(href="/sviluppo") Cos'è
+            li: a(href="/mappa") Monitora Inquinamento
+            li: a(href="/geolocalizzazione") Inserisci Coordinate
+    block content
+
+    footer#contatti
+      .container
+        h2 Contattaci
+        p Email: info@svilupposostenibile.it
+        p © 2025 Sviluppo Sostenibile

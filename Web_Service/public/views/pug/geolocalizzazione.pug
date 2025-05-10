@@ -1,39 +1,17 @@
-doctype html
-html(lang="it")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title Geolocalizzazione Inquinamento
-    link(rel="stylesheet", href="/css")
-    link(rel="icon" href="/img/ico/favicon.ico" type="image/x-icon")
-  body
-    header
-      .container
-        h1 Sviluppo Sostenibile
-        nav
-          ul
-            li: a(href="/") Home
-            li: a(href="/sviluppo") Cos'è
-            li: a(href="/mappa") Monitora Inquinamento
+extends layout
 
-    main
-      section#input-coord
-        .container
+block content
+  main
+    section#input-coord
+      .container
+        center
+          h2 Inserisci Coordinate Geografiche
+        form(action="/api" method="get")
+          label(for="lat") Latitudine: 
+          input(type="text" id="lat" name="lat" required placeholder="es. 45.4642")
+          br
+          label(for="lon") Longitudine: 
+          input(type="text" id="lon" name="lon" required placeholder="es. 9.1900")
+          br
           center
-            h2 Inserisci Coordinate Geografiche
-          form(action="/api" method="get")
-            label(for="lat") Latitudine: 
-            input(type="text" id="lat" name="lat" required placeholder="es. 45.4642")
-            br
-            label(for="lon") Longitudine: 
-            input(type="text" id="lon" name="lon" required placeholder="es. 9.1900")
-            br
-            center
-              button(type="submit" formtarget="_blank" id="checkQualitaAria") Controlla Qualità dell'Aria
-
-    footer#contatti
-      .container
-        h2 Contattaci
-        p Email: info@svilupposostenibile.it
-        p © 2025 Sviluppo Sostenibile
-    
+            button(type="submit" formtarget="_blank" id="checkQualitaAria") Controlla Qualità dell'Aria

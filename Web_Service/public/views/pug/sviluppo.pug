@@ -1,59 +1,36 @@
-doctype html
-html(lang="it")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Approfondimento: Sviluppo Sostenibile
-    link(rel="stylesheet", href="/css")
-    link(rel="icon" href="/img/ico/favicon.ico" type="image/x-icon")
-    
-  body
-    header
+extends layout
+
+block content
+  main
+    section#concetto
       .container
-        h1 Sviluppo Sostenibile
-        nav
-          ul
-            li: a(href="/") Home
-            li: a(href="/mappa") Monitora Inquinamento
-            li: a(href="/geolocalizzazione") Inserisci Coordinate
-
-
-    main
-      section#concetto
-        .container
-          h2 Che cos'è lo sviluppo sostenibile?
-          p
-            | Il concetto di sviluppo sostenibile è stato formalizzato nel 1987 nel rapporto Brundtland, che lo definisce come
-            | "uno sviluppo che soddisfa i bisogni del presente senza compromettere la capacità delle future generazioni di soddisfare i propri".
-          p
-            | Significa quindi bilanciare le esigenze ambientali, sociali ed economiche per garantire una qualità della vita equa e duratura.
-
-      section#pilastri
-        .container
-          h2 I tre pilastri dello sviluppo sostenibile
-          ul
-            li
-              strong Ambiente: 
-              | proteggere gli ecosistemi, ridurre l'inquinamento e contrastare i cambiamenti climatici.
-            li
-              strong Società: 
-              | promuovere l'inclusione, l'equità, la salute e l'istruzione per tutti.
-            li
-              strong Economia: 
-              | creare crescita economica duratura, lavoro dignitoso e innovazione responsabile.
-
-      section#esempi
-        .container
-          h2 Esempi concreti di sviluppo sostenibile
-          p Ecco alcune azioni reali che incarnano il concetto:
-          ul
-            li Utilizzo di energie rinnovabili (solare, eolico, idroelettrico).
-            li Progetti di agricoltura biologica e a km 0.
-            li Edilizia ecocompatibile con materiali riciclabili e basso impatto ambientale.
-            li Sistemi di mobilità sostenibile (bike sharing, trasporto pubblico efficiente).
-
-    footer
-      .container
+        h2 Che cos'è lo sviluppo sostenibile?
         p
-          | © 2025 Sviluppo Sostenibile | 
-          a(href="index.html") Torna alla home
+          | Il concetto di sviluppo sostenibile è stato formalizzato nel 1987 nel rapporto Brundtland, che lo definisce come
+          | "uno sviluppo che soddisfa i bisogni del presente senza compromettere la capacità delle future generazioni di soddisfare i propri".
+        p
+          | Significa quindi bilanciare le esigenze ambientali, sociali ed economiche per garantire una qualità della vita equa e duratura.
+
+    section#pilastri
+      .container
+        h2 I tre pilastri dello sviluppo sostenibile
+        ul
+          li
+            strong Ambiente: 
+            | proteggere gli ecosistemi, ridurre l'inquinamento e contrastare i cambiamenti climatici.
+          li
+            strong Società: 
+            | promuovere l'inclusione, l'equità, la salute e l'istruzione per tutti.
+          li
+            strong Economia: 
+            | creare crescita economica duratura, lavoro dignitoso e innovazione responsabile.
+
+    section#esempi
+      .container
+        h2 Esempi concreti di sviluppo sostenibile
+        p Ecco alcune azioni reali che incarnano il concetto:
+        ul
+          li Utilizzo di energie rinnovabili (solare, eolico, idroelettrico).
+          li Progetti di agricoltura biologica e a km 0.
+          li Edilizia ecocompatibile con materiali riciclabili e basso impatto ambientale.
+          li Sistemi di mobilità sostenibile (bike sharing, trasporto pubblico efficiente).
