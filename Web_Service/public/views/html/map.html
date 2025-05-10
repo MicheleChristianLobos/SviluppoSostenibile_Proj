@@ -69,7 +69,6 @@
     }
 
     #home-btn-div {
-      margin-top: 20%;
       text-align: center;
     }
   </style>
@@ -88,7 +87,6 @@
 
       <!--Canvas => utile per contenere elementi bitmap e le loro caratteristiche di risoluzione (Grafico a torta)-->
       <canvas id="airQualityChart" width="400" height="400"></canvas><br>
-      <div id="home-btn-div"><button class="btn-home" onclick="window.location.href='/'">Torna alla Home Page</button></div>
     </div>
   </div>
 
@@ -190,6 +188,10 @@
           </tbody>
         </table>
 
+      </div>
+
+      <div id="home-btn-div">
+        <button class="btn-home" onclick="window.location.href='/'">Torna alla Home Page</button>
       </div>
       `;
       return div;
