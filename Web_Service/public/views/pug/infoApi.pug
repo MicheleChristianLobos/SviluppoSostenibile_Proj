@@ -9,29 +9,27 @@ block content
         p E' possibile fare richieste di API al nostro server digitando l'url... 
         div(style="background-color:rgba(102, 102, 102, 0.31)") 
           center
-            h1 /api?lat={x.x}&lon={x.x}
+            code /api?lat={x.x}&lon={x.x}
         p ... dove {x.x} è la latitudine e {x.x} è la longitudine.
         p Così facendo si otterrà un file JSON con i dati richiesti...
         div(style="background-color:rgba(102, 102, 102, 0.31)") 
-          h1 { 
-          h1  "coords": {
-          h1    "lat": x.x
-          h1      "lon": x.x
-          h1    },
-          h1    "aqi_txt": "(Indice di qualità in stringa)",
-          h1    "aqi_int": (Indice di qualità in intero),
-          h1    "comps": {
-          h1      "co": x.x,
-          h1      "no": x.x,
-          h1      "no2": x.x,
-          h1      "o3": x.x,
-          h1      "so2": x.x,
-          h1      "pm2_5": x.x,
-          h1      "pm10": x.x,
-          h1      "nh3": x.x
-          h1    },
-          h1    "dt_txt": "gg/mm/yyyy, ore:minuti:secondi",
-          h1    "dt_unix": (intero di rappresentazione del tempo per informatici),
-          h1  }
-        
-        
+          code {<br>
+          code &nbsp;&nbsp;"coords": {<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lat": x.x,<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"lon": x.x<br>
+          code &nbsp;&nbsp;},<br>
+          code &nbsp;&nbsp;"aqi_txt": "(Indice di qualità in stringa)",<br>
+          code &nbsp;&nbsp;"aqi_int": (Indice di qualità in intero),<br>
+          code &nbsp;&nbsp;"comps": {<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"co": x.x,<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"no": x.x,<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"no2": x.x,<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"o3": x.x,<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"so2": x.x,<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pm2_5": x.x,<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"pm10": x.x,<br>
+          code &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"nh3": x.x<br>
+          code &nbsp;&nbsp;},<br>
+          code &nbsp;&nbsp;"dt_txt": "gg/mm/yyyy, ore:minuti:secondi",<br>
+          code &nbsp;&nbsp;"dt_unix": (intero di rappresentazione del tempo per informatici - UNIX Epoch)<br>
+          code }
