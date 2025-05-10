@@ -29,7 +29,8 @@ exports.api = async function (lat, lon) {
                 "lat": api_response.data.coord.lat,
                 "lon": api_response.data.coord.lon
             },
-            "aq": AQI_MEANINGS[api_response.data.list[0].main.aqi] || "N/D",
+            "aqi_txt": AQI_MEANINGS[api_response.data.list[0].main.aqi] || "N/D",
+            "aqi_int": api_response.data.list[0].main.aqi,
             "comps": {
                 "co": api_response.data.list[0].components.co,
                 "no": api_response.data.list[0].components.no,
