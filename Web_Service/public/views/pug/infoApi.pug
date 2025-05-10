@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  main
+    section#input-coord
+      .container
+        center
+          h2 Come usare le nostre API 
+        p E' possibile fare richieste di API al nostro server digitando l'url... 
+        div(style="background-color:rgba(102, 102, 102, 0.31)") 
+          center
+            h1 /api?lat={x.x}&lon={x.x}
+        p ... dove {x.x} è la latitudine e {x.x} è la longitudine.
+        p Così facendo si otterrà un file JSON con i dati richiesti...
+        div(style="background-color:rgba(102, 102, 102, 0.31)") 
+          h1 { 
+          h1  "coords": {
+          h1    "lat": x.x
+          h1      "lon": x.x
+          h1    },
+          h1    "aqi_txt": "(Indice di qualità in stringa)",
+          h1    "aqi_int": (Indice di qualità in intero),
+          h1    "comps": {
+          h1      "co": x.x,
+          h1      "no": x.x,
+          h1      "no2": x.x,
+          h1      "o3": x.x,
+          h1      "so2": x.x,
+          h1      "pm2_5": x.x,
+          h1      "pm10": x.x,
+          h1      "nh3": x.x
+          h1    },
+          h1    "dt_txt": "gg/mm/yyyy, ore:minuti:secondi",
+          h1    "dt_unix": (intero di rappresentazione del tempo per informatici),
+          h1  }
+        
+        

@@ -26,6 +26,11 @@ app.get('/sviluppo', (req, res) => {
   res.render('sviluppo'); // Renderizza public/views/pug/sviluppo.pug
 });
 
+// Visualizza infoApi.pug
+app.get('/infoApi', (req, res) => {
+  res.render('infoApi'); // Renderizza public/views/pug/sviluppo.pug
+});
+
 app.get('/mappa', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'views', 'html', 'map.html'));
 });
